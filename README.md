@@ -18,7 +18,7 @@ O programa escolhido para analisarmos os efeitos da paralelização e aceleraç�
 
 ## Estimativa de ganho de Desempenho:
 - Observa-se que, em decorrência da simplicidade do algoritmo, podemos admitir que a paralelização terá efeito de dividir o tempo de processamento na quantidade de cores adotados. Ou seja, se tivermos 4 cores, então podemos dizer que a estimativa de tempo será **tempo inicial / número de cores**.
-- Para a aceleração, se tivermos uma matriz completa com apenas números de ponto flutuante, podemos prever que, como as operações de ponto flutuantel levam 4 ciclos a para serem executadas, deveremos ter um ganho de, aproximadamente, 25%.
+- Para a aceleração, se tivermos uma matriz completa com apenas números de ponto flutuante, podemos prever que, como as operações de ponto flutuante levam 4 ciclos para serem executadas, deveremos ter um total de ciclos de até 4x menor.
 
 ## Experimentos a serem realizados:
 - Configuração serial sem aceleração
