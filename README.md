@@ -10,12 +10,11 @@
 |Gustavo Rodrigues Basso| 105046|
 
 ## Programa Escolhido:
-Calculo do determinante de uma matriz NxN
-
+O programa escolhido para analisarmos os efeitos da paralelização e aceleração foi o Calculo do Determinante de um Matriz NxN.
 
 ## Blocos/Funções a serem otimizadas:
-- Paralelização: cofatores
-- Aceleração: multiplicação de ponto flutuante 
+- Serão paralelizados os calculos dos cofatores do determinante 
+- A função escolhida para ser acelerada foi a multiplicação de pontos flutuantes
 
 ## Estimativa de ganho de Desempenho:
 
