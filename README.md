@@ -17,7 +17,7 @@ O programa escolhido para analisarmos os efeitos da paralelização e aceleraç�
 - A função escolhida para ser acelerada foi a multiplicação de pontos flutuantes, visto que as matrizes devem aceitar números fracionários.
 
 ## Estimativa de ganho de Desempenho:
-- Observa-se que, em decorrência da simplicidade do algoritmo, podemos admitir que a paralelização terá efeito de dividir o tempo de processamento na quantidade de cores adotados. Ou seja, se tivermos 4 cores, então podemos dizer que a estimativa de tempo será **tempo inicial / número de cores **.
+- Observa-se que, em decorrência da simplicidade do algoritmo, podemos admitir que a paralelização terá efeito de dividir o tempo de processamento na quantidade de cores adotados. Ou seja, se tivermos 4 cores, então podemos dizer que a estimativa de tempo será ** tempo inicial / número de cores **.
 - Para a aceleração, se tivermos uma matriz completa com apenas números de ponto flutuante, podemos prever que, como as operações de ponto flutuantel levam 4 ciclos a para serem executadas, deveremos ter um ganho de, aproximadamente, 25%.
 
 ## Experimentos a serem realizados:
