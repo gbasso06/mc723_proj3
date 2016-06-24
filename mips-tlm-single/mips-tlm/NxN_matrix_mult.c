@@ -37,8 +37,10 @@ int main(){
 	index_processor = n_processors++;
 	ReleaseLock();
 	
-	start = (N/MAXPROCESSORS)*index_processor;
-	end 	= start + N/MAXPROCESSORS;
+	//start = (N/MAXPROCESSORS)*index_processor;
+	//end 	= start + N/MAXPROCESSORS;
+	start 	= 0;
+	end 	= N;
     
 	for(i = start; i < end; i++){
 		for(j = 0; j < N; j++){

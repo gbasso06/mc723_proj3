@@ -36,7 +36,7 @@ int sc_main(int ac, char *av[])
 
   //!  ISA simulator
   mips mips_proc1("mips");
-  mips mips_proc2("mips2");
+  //mips mips_proc2("mips2");
   ac_tlm_mem mem("mem", 100*1024*1024);
   ac_tlm_router router("router");
   ac_tlm_peripheral peripheral("peripheral"); 
@@ -45,13 +45,13 @@ int sc_main(int ac, char *av[])
   router.PERIPHERAL_port(peripheral.target_export); 
 
   mips_proc1.DM_port(router.target_export);
-  mips_proc2.DM_port(router.target_export);
+ // mips_proc2.DM_port(router.target_export);
 
 
 
 #ifdef AC_DEBUG
   ac_trace("mips_proc1.trace");
-  ac_trace2("mips_proc2.trace");
+  //ac_trace2("mips_proc2.trace");
 #endif 
 
   int ac1, ac2;
@@ -61,13 +61,13 @@ int sc_main(int ac, char *av[])
   char *av2[] = {"mips.x", "--load=NxN_matrix_mult.mips"};
 
   mips_proc1.init(ac1, av1);
-  mips_proc2.init(ac2, av2);  
+  //mips_proc2.init(ac2, av2);  
   cerr << endl;
   
   sc_start();
 
   mips_proc1.PrintStat();
-  mips_proc2.PrintStat();
+  //mips_proc2.PrintStat();
   cerr << endl;
 
 #ifdef AC_STATS
@@ -78,5 +78,5 @@ int sc_main(int ac, char *av[])
   ac_close_trace();
 #endif 
 
-  return mips_proc1.ac_exit_status | mips_proc2.ac_exit_status;
+  return mips_proc1.ac_exit_status;// | mips_proc2.ac_exit_status;
 }

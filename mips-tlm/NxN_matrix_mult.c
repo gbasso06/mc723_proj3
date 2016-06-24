@@ -50,10 +50,12 @@ int main(){
 			result[i][j] = aux;
 			ReleaseLock();
 		}
-	}
+	}/*
 	if (index_processor == 1){
 		AcquireLock();
 		print_matrix(result);
 		ReleaseLock();
 	}
+*/
+
 }
