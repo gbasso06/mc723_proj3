@@ -95,12 +95,12 @@ int main(){
       }
     }
   }
-  
-  printf("PRIMEIRA MATRIZ:\n");
-  print_matrix(matriz1); 
-  printf("SEGUNDA MATRIZ:\n");
-  print_matrix(matriz2);
-  printf("resultado:\n");
+
+  // printf("PRIMEIRA MATRIZ:\n");
+  // print_matrix(matriz1);
+  // printf("SEGUNDA MATRIZ:\n");
+  // print_matrix(matriz2);
+  // printf("resultado:\n");
   print_matrix(result);
 
 }

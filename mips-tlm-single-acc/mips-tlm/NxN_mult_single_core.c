@@ -2,6 +2,13 @@
 
 #define N 32
 
+#define OP1_ADRESS (201*1024*1024)
+#define OP2_ADRESS (202*1024*1024)
+#define RESULT_ADRESS (203*1024*1024)
+
+volatile int *operand1 = (volatile int *) OP1_ADRESS;
+volatile int *operand2 = (volatile int *) OP2_ADRESS;
+volatile int *wresult = (volatile int *) RESULT_ADRESS;
 int result[N][N];
 
 int matriz1[N][N] = {
@@ -84,6 +91,11 @@ void print_matrix(int matriz[N][N]){
   }
 }
 
+void send_operands(int a, int b){
+  *operand1 = a;
+  *operand2 = b;
+}
+
 int main(){
   int i, j, l = 0;
 
@@ -91,16 +103,17 @@ int main(){
     for(j = 0; j < N; j++){
       result[i][j] = 0;
       for(l = 0; l < N; l++){
-        result[i][j] += matriz1[i][l] + matriz2[l][j];
+        send_operands(matriz1[i][l], matriz2[l][j]);
+        result[i][j] += *wresult;
       }
     }
   }
-  
-  printf("PRIMEIRA MATRIZ:\n");
-  print_matrix(matriz1); 
-  printf("SEGUNDA MATRIZ:\n");
-  print_matrix(matriz2);
-  printf("resultado:\n");
+
+  // printf("PRIMEIRA MATRIZ:\n");
+  // print_matrix(matriz1);
+  // printf("SEGUNDA MATRIZ:\n");
+  // print_matrix(matriz2);
+  // printf("resultado:\n");
   print_matrix(result);
 
 }
