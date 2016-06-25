@@ -51,7 +51,13 @@ void ac_behavior( instruction )
   npc = ac_pc + 4;
 #endif 
 };
- 
+
+int cont_outros = 0;
+int cont_controle = 0;
+int cont_mem = 0;
+int cont_nop =0;
+int cont_mult_div=0;
+
 //! Instruction Format behavior methods.
 void ac_behavior( Type_R ){}
 void ac_behavior( Type_I ){}
@@ -63,6 +69,12 @@ void ac_behavior(begin)
   dbg_printf("@@@ begin behavior @@@\n");
   RB[0] = 0;
   npc = ac_pc + 4;
+
+ cont_outros = 0;
+ cont_controle = 0;
+ cont_mem = 0;
+ cont_nop =0;
+ cont_mult_div=0;
 
   // Is is not required by the architecture, but makes debug really easier
   for (int regNum = 0; regNum < 32; regNum ++)
@@ -79,6 +91,12 @@ void ac_behavior(begin)
 void ac_behavior(end)
 {
   dbg_printf("@@@ end behavior @@@\n");
+	printf("O número de instruções de Peso 1 é: %d\n", cont_outros);
+	printf("O número de instruções de Peso 3(Control) é: %d\n", cont_controle);
+	printf("O número de instruções de Peso 10(Acesso a Memoria) é: %d\n", cont_mem);
+	printf("O número de instruções de Peso 0(?)(NOP) é: %d\n", cont_nop);
+	printf("O número de instruções de Peso 2(?)(mult e div) é: %d\n", cont_mult_div);
+
 }
 
 
@@ -90,6 +108,8 @@ void ac_behavior( lb )
   byte = DM.read_byte(RB[rs]+ imm);
   RB[rt] = (ac_Sword)byte ;
   dbg_printf("Result = %#x\n", RB[rt]);
+
+  cont_mem++;
 };
 
 //!Instruction lbu behavior method.
@@ -100,6 +120,8 @@ void ac_behavior( lbu )
   byte = DM.read_byte(RB[rs]+ imm);
   RB[rt] = byte ;
   dbg_printf("Result = %#x\n", RB[rt]);
+
+  cont_mem++;
 };
 
 //!Instruction lh behavior method.
@@ -110,6 +132,8 @@ void ac_behavior( lh )
   half = DM.read_half(RB[rs]+ imm);
   RB[rt] = (ac_Sword)half ;
   dbg_printf("Result = %#x\n", RB[rt]);
+
+  cont_mem++;
 };
 
 //!Instruction lhu behavior method.
@@ -119,6 +143,8 @@ void ac_behavior( lhu )
   half = DM.read_half(RB[rs]+ imm);
   RB[rt] = half ;
   dbg_printf("Result = %#x\n", RB[rt]);
+
+  cont_mem++;
 };
 
 //!Instruction lw behavior method.
@@ -127,6 +153,8 @@ void ac_behavior( lw )
   dbg_printf("lw r%d, %d(r%d)\n", rt, imm & 0xFFFF, rs);
   RB[rt] = DM.read(RB[rs]+ imm);
   dbg_printf("Result = %#x\n", RB[rt]);
+
+  cont_mem++;
 };
 
 //!Instruction lwl behavior method.
@@ -143,6 +171,8 @@ void ac_behavior( lwl )
   data |= RB[rt] & ((1<<offset)-1);
   RB[rt] = data;
   dbg_printf("Result = %#x\n", RB[rt]);
+
+  cont_mem++;
 };
 
 //!Instruction lwr behavior method.
@@ -159,6 +189,8 @@ void ac_behavior( lwr )
   data |= RB[rt] & (0xFFFFFFFF << (32-offset));
   RB[rt] = data;
   dbg_printf("Result = %#x\n", RB[rt]);
+
+  cont_mem++;
 };
 
 //!Instruction sb behavior method.
@@ -169,6 +201,8 @@ void ac_behavior( sb )
   byte = RB[rt] & 0xFF;
   DM.write_byte(RB[rs] + imm, byte);
   dbg_printf("Result = %#x\n", (int) byte);
+
+  cont_mem++;
 };
 
 //!Instruction sh behavior method.
@@ -179,6 +213,8 @@ void ac_behavior( sh )
   half = RB[rt] & 0xFFFF;
   DM.write_half(RB[rs] + imm, half);
   dbg_printf("Result = %#x\n", (int) half);
+
+  cont_mem++;
 };
 
 //!Instruction sw behavior method.
@@ -187,6 +223,8 @@ void ac_behavior( sw )
   dbg_printf("sw r%d, %d(r%d)\n", rt, imm & 0xFFFF, rs);
   DM.write(RB[rs] + imm, RB[rt]);
   dbg_printf("Result = %#x\n", RB[rt]);
+
+  cont_mem++;
 };
 
 //!Instruction swl behavior method.
@@ -203,6 +241,8 @@ void ac_behavior( swl )
   data |= DM.read(addr & 0xFFFFFFFC) & (0xFFFFFFFF << (32-offset));
   DM.write(addr & 0xFFFFFFFC, data);
   dbg_printf("Result = %#x\n", data);
+
+  cont_mem++;
 };
 
 //!Instruction swr behavior method.
@@ -219,6 +259,8 @@ void ac_behavior( swr )
   data |= DM.read(addr & 0xFFFFFFFC) & ((1<<offset)-1);
   DM.write(addr & 0xFFFFFFFC, data);
   dbg_printf("Result = %#x\n", data);
+
+  cont_mem++;
 };
 
 //!Instruction addi behavior method.
@@ -232,6 +274,8 @@ void ac_behavior( addi )
        ((imm & 0x80000000) != (RB[rt] & 0x80000000)) ) {
     fprintf(stderr, "EXCEPTION(addi): integer overflow.\n"); exit(EXIT_FAILURE);
   }
+
+  cont_outros++;
 };
 
 //!Instruction addiu behavior method.
@@ -240,6 +284,8 @@ void ac_behavior( addiu )
   dbg_printf("addiu r%d, r%d, %d\n", rt, rs, imm & 0xFFFF);
   RB[rt] = RB[rs] + imm;
   dbg_printf("Result = %#x\n", RB[rt]);
+
+  cont_outros++;
 };
 
 //!Instruction slti behavior method.
@@ -253,6 +299,8 @@ void ac_behavior( slti )
   else
     RB[rt] = 0;
   dbg_printf("Result = %#x\n", RB[rt]);
+
+  cont_outros++;
 };
 
 //!Instruction sltiu behavior method.
@@ -266,6 +314,8 @@ void ac_behavior( sltiu )
   else
     RB[rt] = 0;
   dbg_printf("Result = %#x\n", RB[rt]);
+
+  cont_outros++;
 };
 
 //!Instruction andi behavior method.
@@ -274,6 +324,8 @@ void ac_behavior( andi )
   dbg_printf("andi r%d, r%d, %d\n", rt, rs, imm & 0xFFFF);
   RB[rt] = RB[rs] & (imm & 0xFFFF) ;
   dbg_printf("Result = %#x\n", RB[rt]);
+
+  cont_outros++;
 };
 
 //!Instruction ori behavior method.
@@ -282,6 +334,8 @@ void ac_behavior( ori )
   dbg_printf("ori r%d, r%d, %d\n", rt, rs, imm & 0xFFFF);
   RB[rt] = RB[rs] | (imm & 0xFFFF) ;
   dbg_printf("Result = %#x\n", RB[rt]);
+
+  cont_outros++;
 };
 
 //!Instruction xori behavior method.
@@ -290,6 +344,8 @@ void ac_behavior( xori )
   dbg_printf("xori r%d, r%d, %d\n", rt, rs, imm & 0xFFFF);
   RB[rt] = RB[rs] ^ (imm & 0xFFFF) ;
   dbg_printf("Result = %#x\n", RB[rt]);
+
+  cont_outros++;
 };
 
 //!Instruction lui behavior method.
@@ -301,6 +357,8 @@ void ac_behavior( lui )
   // and moved to the target register ( rt )
   RB[rt] = imm << 16;
   dbg_printf("Result = %#x\n", RB[rt]);
+
+  cont_mem++;
 };
 
 //!Instruction add behavior method.
@@ -314,6 +372,8 @@ void ac_behavior( add )
        ((RB[rd] & 0x80000000) != (RB[rt] & 0x80000000)) ) {
     fprintf(stderr, "EXCEPTION(add): integer overflow.\n"); exit(EXIT_FAILURE);
   }
+
+  cont_outros++;
 };
 
 //!Instruction addu behavior method.
@@ -324,6 +384,8 @@ void ac_behavior( addu )
   //cout << "  RS: " << (unsigned int)RB[rs] << " RT: " << (unsigned int)RB[rt] << endl;
   //cout << "  Result =  " <<  (unsigned int)RB[rd] <<endl;
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction sub behavior method.
@@ -333,6 +395,8 @@ void ac_behavior( sub )
   RB[rd] = RB[rs] - RB[rt];
   dbg_printf("Result = %#x\n", RB[rd]);
   //TODO: test integer overflow exception for sub
+
+  cont_outros++;
 };
 
 //!Instruction subu behavior method.
@@ -341,6 +405,8 @@ void ac_behavior( subu )
   dbg_printf("subu r%d, r%d, r%d\n", rd, rs, rt);
   RB[rd] = RB[rs] - RB[rt];
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction slt behavior method.
@@ -354,6 +420,8 @@ void ac_behavior( slt )
   else
     RB[rd] = 0;
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction sltu behavior method.
@@ -367,6 +435,8 @@ void ac_behavior( sltu )
   else
     RB[rd] = 0;
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction instr_and behavior method.
@@ -375,6 +445,8 @@ void ac_behavior( instr_and )
   dbg_printf("instr_and r%d, r%d, r%d\n", rd, rs, rt);
   RB[rd] = RB[rs] & RB[rt];
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction instr_or behavior method.
@@ -383,6 +455,8 @@ void ac_behavior( instr_or )
   dbg_printf("instr_or r%d, r%d, r%d\n", rd, rs, rt);
   RB[rd] = RB[rs] | RB[rt];
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction instr_xor behavior method.
@@ -391,6 +465,8 @@ void ac_behavior( instr_xor )
   dbg_printf("instr_xor r%d, r%d, r%d\n", rd, rs, rt);
   RB[rd] = RB[rs] ^ RB[rt];
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction instr_nor behavior method.
@@ -399,12 +475,16 @@ void ac_behavior( instr_nor )
   dbg_printf("nor r%d, r%d, r%d\n", rd, rs, rt);
   RB[rd] = ~(RB[rs] | RB[rt]);
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction nop behavior method.
 void ac_behavior( nop )
 {  
   dbg_printf("nop\n");
+
+  cont_nop++;
 };
 
 //!Instruction sll behavior method.
@@ -413,6 +493,8 @@ void ac_behavior( sll )
   dbg_printf("sll r%d, r%d, %d\n", rd, rs, shamt);
   RB[rd] = RB[rt] << shamt;
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction srl behavior method.
@@ -421,6 +503,8 @@ void ac_behavior( srl )
   dbg_printf("srl r%d, r%d, %d\n", rd, rs, shamt);
   RB[rd] = RB[rt] >> shamt;
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction sra behavior method.
@@ -429,6 +513,8 @@ void ac_behavior( sra )
   dbg_printf("sra r%d, r%d, %d\n", rd, rs, shamt);
   RB[rd] = (ac_Sword) RB[rt] >> shamt;
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction sllv behavior method.
@@ -437,6 +523,8 @@ void ac_behavior( sllv )
   dbg_printf("sllv r%d, r%d, r%d\n", rd, rt, rs);
   RB[rd] = RB[rt] << (RB[rs] & 0x1F);
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction srlv behavior method.
@@ -445,6 +533,8 @@ void ac_behavior( srlv )
   dbg_printf("srlv r%d, r%d, r%d\n", rd, rt, rs);
   RB[rd] = RB[rt] >> (RB[rs] & 0x1F);
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction srav behavior method.
@@ -453,6 +543,8 @@ void ac_behavior( srav )
   dbg_printf("srav r%d, r%d, r%d\n", rd, rt, rs);
   RB[rd] = (ac_Sword) RB[rt] >> (RB[rs] & 0x1F);
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction mult behavior method.
@@ -475,6 +567,8 @@ void ac_behavior( mult )
   hi = half_result ;
 
   dbg_printf("Result = %#llx\n", result);
+
+  cont_mult_div++;
 };
 
 //!Instruction multu behavior method.
@@ -497,6 +591,8 @@ void ac_behavior( multu )
   hi = half_result ;
 
   dbg_printf("Result = %#llx\n", result);
+
+  cont_mult_div++;
 };
 
 //!Instruction div behavior method.
@@ -507,6 +603,8 @@ void ac_behavior( div )
   lo = (ac_Sword) RB[rs] / (ac_Sword) RB[rt];
   // Register HI receives remainder
   hi = (ac_Sword) RB[rs] % (ac_Sword) RB[rt];
+
+  cont_mult_div++;
 };
 
 //!Instruction divu behavior method.
@@ -517,6 +615,8 @@ void ac_behavior( divu )
   lo = RB[rs] / RB[rt];
   // Register HI receives remainder
   hi = RB[rs] % RB[rt];
+
+  cont_mult_div++;
 };
 
 //!Instruction mfhi behavior method.
@@ -525,6 +625,8 @@ void ac_behavior( mfhi )
   dbg_printf("mfhi r%d\n", rd);
   RB[rd] = hi;
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction mthi behavior method.
@@ -533,6 +635,8 @@ void ac_behavior( mthi )
   dbg_printf("mthi r%d\n", rs);
   hi = RB[rs];
   dbg_printf("Result = %#x\n", (unsigned int) hi);
+
+  cont_outros++;
 };
 
 //!Instruction mflo behavior method.
@@ -541,6 +645,8 @@ void ac_behavior( mflo )
   dbg_printf("mflo r%d\n", rd);
   RB[rd] = lo;
   dbg_printf("Result = %#x\n", RB[rd]);
+
+  cont_outros++;
 };
 
 //!Instruction mtlo behavior method.
@@ -549,6 +655,8 @@ void ac_behavior( mtlo )
   dbg_printf("mtlo r%d\n", rs);
   lo = RB[rs];
   dbg_printf("Result = %#x\n", (unsigned int) lo);
+
+  cont_outros++;
 };
 
 //!Instruction j behavior method.
@@ -560,6 +668,8 @@ void ac_behavior( j )
   npc =  (ac_pc & 0xF0000000) | addr;
 #endif 
   dbg_printf("Target = %#x\n", (ac_pc & 0xF0000000) | addr );
+
+  cont_controle++;
 };
 
 //!Instruction jal behavior method.
@@ -578,6 +688,8 @@ void ac_behavior( jal )
 	
   dbg_printf("Target = %#x\n", (ac_pc & 0xF0000000) | addr );
   dbg_printf("Return = %#x\n", ac_pc+4);
+
+  cont_controle++;
 };
 
 //!Instruction jr behavior method.
@@ -590,6 +702,8 @@ void ac_behavior( jr )
   npc = RB[rs], 1;
 #endif 
   dbg_printf("Target = %#x\n", RB[rs]);
+
+  cont_controle++;
 };
 
 //!Instruction jalr behavior method.
@@ -608,6 +722,8 @@ void ac_behavior( jalr )
     rd = Ra;
   RB[rd] = ac_pc+4;
   dbg_printf("Return = %#x\n", ac_pc+4);
+
+  cont_controle++;
 };
 
 //!Instruction beq behavior method.
@@ -620,6 +736,8 @@ void ac_behavior( beq )
 #endif 
     dbg_printf("Taken to %#x\n", ac_pc + (imm<<2));
   }	
+
+  cont_controle++;
 };
 
 //!Instruction bne behavior method.
@@ -632,6 +750,8 @@ void ac_behavior( bne )
 #endif 
     dbg_printf("Taken to %#x\n", ac_pc + (imm<<2));
   }	
+
+  cont_controle++;
 };
 
 //!Instruction blez behavior method.
@@ -644,6 +764,8 @@ void ac_behavior( blez )
 #endif 
     dbg_printf("Taken to %#x\n", ac_pc + (imm<<2));
   }	
+
+  cont_controle++;
 };
 
 //!Instruction bgtz behavior method.
@@ -656,6 +778,8 @@ void ac_behavior( bgtz )
 #endif 
     dbg_printf("Taken to %#x\n", ac_pc + (imm<<2));
   }	
+
+  cont_controle++;
 };
 
 //!Instruction bltz behavior method.
@@ -668,6 +792,8 @@ void ac_behavior( bltz )
 #endif 
     dbg_printf("Taken to %#x\n", ac_pc + (imm<<2));
   }	
+
+  cont_controle++;
 };
 
 //!Instruction bgez behavior method.
@@ -680,6 +806,8 @@ void ac_behavior( bgez )
 #endif 
     dbg_printf("Taken to %#x\n", ac_pc + (imm<<2));
   }	
+
+  cont_controle++;
 };
 
 //!Instruction bltzal behavior method.
@@ -694,6 +822,8 @@ void ac_behavior( bltzal )
     dbg_printf("Taken to %#x\n", ac_pc + (imm<<2));
   }	
   dbg_printf("Return = %#x\n", ac_pc+4);
+
+  cont_controle++;
 };
 
 //!Instruction bgezal behavior method.
@@ -708,6 +838,8 @@ void ac_behavior( bgezal )
     dbg_printf("Taken to %#x\n", ac_pc + (imm<<2));
   }	
   dbg_printf("Return = %#x\n", ac_pc+4);
+
+  cont_controle++;
 };
 
 //!Instruction sys_call behavior method.
