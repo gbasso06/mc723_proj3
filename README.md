@@ -1,4 +1,4 @@
-# MC723 - Projeto 3 - Roteiro
+# Projeto 3 - Grupo 4
 
 ## Integrantes:
 
@@ -8,20 +8,47 @@
 |Matheus Pinheiro dos Santos |119920|
 |Carlos Gregoreki| 104721|
 |Gustavo Rodrigues Basso| 105046|
+|Renato Shibata||
 
-## Programa Escolhido:
-O programa escolhido para analisarmos os efeitos da paralelização e aceleração foi o Calculo de Multiplicação de Matrizes NxN.
+## Implementação
+O programa escolhido foi: **multiplicação de duas matrizes inteiras tamanho NxN**.
+A parte do código que foi acelerada através do periférico foi a multiplicação das matrizes e a parte paralelizada foi o envio das matrizes para o periférico
 
-## Blocos/Funções a serem otimizadas:
-- Serão paralelizados as múltiplicações de cada linha da matriz A pelas várias colunas da matriz B.
-- A função escolhida para ser acelerada foi a multiplicação de pontos flutuantes, visto que as matrizes devem aceitar números fracionários.
 
-## Estimativa de ganho de Desempenho:
-- Observa-se que, em decorrência da simplicidade do algoritmo, podemos admitir que a paralelização terá efeito de dividir o tempo de processamento na quantidade de cores adotados. Ou seja, se tivermos 4 cores, então podemos dizer que a estimativa de tempo será **tempo inicial / número de cores**.
-- Para a aceleração, se tivermos uma matriz completa com apenas números de ponto flutuante, podemos prever que, como as operações de ponto flutuante levam 4 ciclos para serem executadas, deveremos ter um total de ciclos de até 4x menor.
+### Acelerador: *Multiplicação das Matrizes*
+O acelerador foi implementado da seguinte maneira:
+- Armazenamos as duas matrizes no periférico (adminitndo que ele tem memória o suficiente para armazená-las. 
+- Uma vez que o(s) processador(es) terminam de enviar os elementos ao periférico, este realiza a multiplicação das matrizes.
+- O resultado só enviado de volta depois que o(s) processador(es)terminam de enviar todos os número e requisitam o resultado final
+- O periférico devolve serialmente, 1 a 1, os elementos da matiz resultado
 
-## Experimentos a serem realizados:
-- Configuração serial sem aceleração
-- Configuração serial com aceleração
-- Configuração Paralela sem aceleração
-- Configuração Paralela com aceleração
+### Paralelização: *Envio das matrizes*
+A paralelização do envio das matrizes ocorre da seguinte maneira:
+- Cada processador envia 1/(n de processadores) das matrizes para o periférico.
+- Os elementos são enviados serialmente, 1 a 1, para o periférico.
+
+O maior desafio da implementação foi garantir que a matriz resultante sairia correta, pois se o periférico e o software não estiverem sincronizados (o que foi feito através de locks) o processador poderia enviar os elementos, para o periférico, de maneira embaralhada, o que comprometeria a integridade do resultado final. 
+
+## Experimentos realizados
+
+Para analisar o desempenho do acelerador e da paralelização, de maneira geral, calculamos o número de ciclos para os seguintes casos:
+- Single-core sem aceleração
+- Single-core acelerado
+- Multi-core não acelerado
+- Multi-core acelerado
+
+Além disso estabelecemos peso para cada tipo de instrução da sgeuinte maneira:
+- Acesso a memória: Peso 
+- sadsa
+- dsadsa
+- sadsad
+- asdsa
+
+## Resultado obtidos:
+
+| Nome|RA|
+|---|---|
+|Single-core sem aceleração |116130|
+|Single-core acelerado |119920|
+|Multi-core sem aceleração| 104721|
+|Multicore acelerado| 105046|
