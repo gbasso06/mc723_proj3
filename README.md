@@ -8,7 +8,7 @@
 |Matheus Pinheiro dos Santos |119920|
 |Carlos Gregoreki| 104721|
 |Gustavo Rodrigues Basso| 105046|
-|Renato Shibata||
+|Renato Shibata|082674|
 
 ## Implementação
 O programa escolhido foi: **multiplicação de duas matrizes inteiras tamanho NxN**.
@@ -38,17 +38,41 @@ Para analisar o desempenho do acelerador e da paralelização, de maneira geral,
 - Multi-core acelerado
 
 Além disso estabelecemos peso para cada tipo de instrução da sgeuinte maneira:
-- Acesso a memória: Peso 
-- sadsa
-- dsadsa
-- sadsad
-- asdsa
+- Acesso a memória: Peso 10
+- Operações de controle (jump ou branch): Peso 3
+- Mult e Div: Peso 2
+- Demais: Peso 1
+
+
 
 ## Resultado obtidos:
+### Multi-Core sem aceleração
 
-| Nome|RA|
-|---|---|
-|Single-core sem aceleração |116130|
-|Single-core acelerado |119920|
-|Multi-core sem aceleração| 104721|
-|Multicore acelerado| 105046|
+- 2 Cores
+
+||nº de Intruções|nº ciclos|nº de acessos a Memória|nº Operações de Controle|nº Mult e Div|nº das Demais
+|---|---|---|---|---|---|---|
+Processador 1|155998|1040094|69772|35192|32558|171682|
+Processador 2|157826|1046800|70221|35421|32768|172791|
+
+- 4 Cores
+
+||nº de Intruções|nº ciclos|nº de acessos a Memória|nº Operações de Controle|nº Mult e Div|nº das Demais
+|---|---|---|---|---|---|
+Processador 1|---|---|---|---|---|
+Processador 2|---|---|---|---|---|
+Processador 3|---|---|---|---|---|
+Processador 4|---|---|---|---|---|
+
+- 8 Cores
+
+||nº de Intruções|nº ciclos|nº de acessos a Memória|nº Operações de Controle|nº Mult e Div|nº das Demais
+|---|---|---|---|---|---|
+Processador 1|---|---|---|---|---|
+Processador 2|---|---|---|---|---|
+Processador 3|---|---|---|---|---|
+Processador 4|---|---|---|---|---|
+Processador 5|---|---|---|---|---|
+Processador 6|---|---|---|---|---|
+Processador 7|---|---|---|---|---|
+Processador 8|---|---|---|---|---|
