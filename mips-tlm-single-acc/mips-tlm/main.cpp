@@ -57,7 +57,7 @@ int sc_main(int ac, char *av[])
   int ac1, ac2;
   ac1 = ac2 = 2;
 
-  char *av1[] = {"mips.x", "--load=NxN_mult_single_core.mips"};
+  char *av1[] = {"mips.x", "--load=NxN_matrix_mult.mips"};
   // char *av2[] = {"mips.x", "--load=NxN_matrix_mult.mips"};
 
   mips_proc1.init(ac1, av1);

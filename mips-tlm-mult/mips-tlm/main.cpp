@@ -39,6 +39,10 @@ int sc_main(int ac, char *av[])
   mips mips_proc2("mips2");
   mips mips_proc3("mips3");
   mips mips_proc4("mips4");
+  mips mips_proc5("mips5");
+  mips mips_proc6("mips6");
+  mips mips_proc7("mips7");
+  mips mips_proc8("mips8");
   ac_tlm_mem mem("mem", 100*1024*1024);
   ac_tlm_router router("router");
   ac_tlm_peripheral peripheral("peripheral");
@@ -50,6 +54,10 @@ int sc_main(int ac, char *av[])
   mips_proc2.DM_port(router.target_export);
   mips_proc3.DM_port(router.target_export);
   mips_proc4.DM_port(router.target_export);
+  mips_proc5.DM_port(router.target_export);
+  mips_proc6.DM_port(router.target_export);
+  mips_proc7.DM_port(router.target_export);
+  mips_proc8.DM_port(router.target_export);
 
 
 
@@ -58,20 +66,32 @@ int sc_main(int ac, char *av[])
   ac_trace2("mips_proc2.trace");
   ac_trace3("mips_proc3.trace");
   ac_trace4("mips_proc4.trace");
+  ac_trace5("mips_proc1.trace");
+  ac_trace6("mips_proc2.trace");
+  ac_trace7("mips_proc3.trace");
+  ac_trace8("mips_proc4.trace");
 #endif
 
-  int ac1, ac2, ac3, ac4;
-  ac1 = ac2 = ac3 = ac4 = 2;
+  int ac1, ac2, ac3, ac4, ac5, ac6, ac7, ac8;
+  ac1 = ac2 = ac3 = ac4 = ac5 = ac6 = ac7 = ac8 = 2;
 
   char *av1[] = {"mips.x", "--load=NxN_matrix_mult.mips"};
   char *av2[] = {"mips.x", "--load=NxN_matrix_mult.mips"};
   char *av3[] = {"mips.x", "--load=NxN_matrix_mult.mips"};
   char *av4[] = {"mips.x", "--load=NxN_matrix_mult.mips"};
+  char *av5[] = {"mips.x", "--load=NxN_matrix_mult.mips"};
+  char *av6[] = {"mips.x", "--load=NxN_matrix_mult.mips"};
+  char *av7[] = {"mips.x", "--load=NxN_matrix_mult.mips"};
+  char *av8[] = {"mips.x", "--load=NxN_matrix_mult.mips"};
 
   mips_proc1.init(ac1, av1);
   mips_proc2.init(ac2, av2);
   mips_proc3.init(ac3, av3);
   mips_proc4.init(ac4, av4);
+  mips_proc5.init(ac5, av5);
+  mips_proc6.init(ac6, av6);
+  mips_proc7.init(ac7, av7);
+  mips_proc8.init(ac8, av8);
   cerr << endl;
 
   sc_start();
@@ -80,6 +100,10 @@ int sc_main(int ac, char *av[])
   mips_proc2.PrintStat();
   mips_proc3.PrintStat();
   mips_proc4.PrintStat();
+  mips_proc5.PrintStat();
+  mips_proc6.PrintStat();
+  mips_proc7.PrintStat();
+  mips_proc8.PrintStat();
   cerr << endl;
 
 #ifdef AC_STATS
@@ -90,5 +114,5 @@ int sc_main(int ac, char *av[])
   ac_close_trace();
 #endif
 
-  return mips_proc1.ac_exit_status + mips_proc2.ac_exit_status + mips_proc3.ac_exit_status + mips_proc4.ac_exit_status;
+  return mips_proc1.ac_exit_status + mips_proc2.ac_exit_status + mips_proc3.ac_exit_status + mips_proc4.ac_exit_status + mips_proc5.ac_exit_status + mips_proc6.ac_exit_status + mips_proc7.ac_exit_status + mips_proc8.ac_exit_status;
 }

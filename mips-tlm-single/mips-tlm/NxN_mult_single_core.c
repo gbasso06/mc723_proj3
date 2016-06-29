@@ -91,7 +91,7 @@ int main(){
     for(j = 0; j < N; j++){
       result[i][j] = 0;
       for(l = 0; l < N; l++){
-        result[i][j] += matriz1[i][l] + matriz2[l][j];
+        result[i][j] += matriz1[i][l] * matriz2[l][j];
       }
     }
   }
@@ -101,6 +101,6 @@ int main(){
   // printf("SEGUNDA MATRIZ:\n");
   // print_matrix(matriz2);
   // printf("resultado:\n");
-  print_matrix(result);
+  // print_matrix(result);
 
 }

@@ -5,7 +5,7 @@
 //definições
 #define N 32
 #define BASE_ADRESS (100*1024*1024)
-#define MAXPROCESSORS 4
+#define MAXPROCESSORS 8
 // variáveis compartilhadas entre os processadores
 volatile int *lock = (volatile int *) BASE_ADRESS;
 volatile int n_processors = 0;
