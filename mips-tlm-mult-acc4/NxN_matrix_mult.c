@@ -8,7 +8,7 @@
 #define OP1_ADRESS (201*1024*1024)
 #define OP2_ADRESS (202*1024*1024)
 #define RESULT_ADRESS (203*1024*1024)
-#define MAXPROCESSORS 1
+#define MAXPROCESSORS 4
 // variáveis compartilhadas entre os processadores
 volatile int *lock = (volatile int *) BASE_ADRESS;
 volatile int n_processors = 0;
@@ -16,7 +16,8 @@ volatile int *operand1 	= (volatile int *) OP1_ADRESS;
 volatile int *operand2 	= (volatile int *) OP2_ADRESS;
 volatile int *wresult 	= (volatile int *) RESULT_ADRESS;
 
-volatile void * result;
+// volatile void * result;
+volatile int result[N][N];
 
 int matriz1[N][N] = {
 	{ 9,  3,  4,  3,  3,  7,  4,  7,  5,  0,  5,  6,  8,  7,  4,  5,  2,  1,  8,  6,  6,  9,  4,  6,  5,  4,  2,  2,  9,  8,  4,  2 },
@@ -132,18 +133,34 @@ int main(){
 	start = (N/MAXPROCESSORS)*index_processor;
 	end 	= start + N/MAXPROCESSORS;
 
+AcquireLock();
 	for(i = start; i < end; i++){
 		for(j = 0; j < N; j++){
-
 			send_operands(matriz1[i][j], matriz2[i][j]);
 		}
 	}
+ReleaseLock();
 
-	// for (i = 0; i < N; i++) {
-	//     for (j = 0; j < N; j++){
-	//         printf("%d ", (*wresult));
-	// 	}
-	//     printf("\n");
-  // }
+if(index_processor == MAXPROCESSORS-1) {
+	AcquireLock();
+	for (i = 0; i < N; i++) {
+	    for (j = 0; j < N; j++){
+	        result[i][j] = *wresult;
+		}
+  }
+	ReleaseLock();
+}
+
+// // Print
+// if(index_processor == MAXPROCESSORS-1) {
+// 	AcquireLock();
+// 	for (i = 0; i < N; i++) {
+// 	    for (j = 0; j < N; j++){
+// 	        printf("%d ", result[i][j]);
+// 		}
+// 	    printf("\n");
+//   }
+// 	ReleaseLock();
+// }
 
 }
