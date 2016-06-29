@@ -45,34 +45,5 @@ Além disso estabelecemos peso para cada tipo de instrução da sgeuinte maneira
 
 
 
-## Resultado obtidos:
-### Multi-Core sem aceleração
-
-- 2 Cores
-
-||nº de Intruções|nº ciclos|nº de acessos a Memória|nº Operações de Controle|nº Mult e Div|nº das Demais
-|---|---|---|---|---|---|---|
-Processador 1|155998|1040094|69772|35192|32558|171682|
-Processador 2|157826|1046800|70221|35421|32768|172791|
-
-- 4 Cores
-
-||nº de Intruções|nº ciclos|nº de acessos a Memória|nº Operações de Controle|nº Mult e Div|nº das Demais
-|---|---|---|---|---|---|
-Processador 1|---|---|---|---|---|
-Processador 2|---|---|---|---|---|
-Processador 3|---|---|---|---|---|
-Processador 4|---|---|---|---|---|
-
-- 8 Cores
-
-||nº de Intruções|nº ciclos|nº de acessos a Memória|nº Operações de Controle|nº Mult e Div|nº das Demais
-|---|---|---|---|---|---|
-Processador 1|---|---|---|---|---|
-Processador 2|---|---|---|---|---|
-Processador 3|---|---|---|---|---|
-Processador 4|---|---|---|---|---|
-Processador 5|---|---|---|---|---|
-Processador 6|---|---|---|---|---|
-Processador 7|---|---|---|---|---|
-Processador 8|---|---|---|---|---|
+## Resultados obtidos e analise:
+Os dados obtidos pelas execuções podem ser encontrado [nesta tabela](https://docs.google.com/spreadsheets/d/1V_iAIqIIxuZ95ZEGT3PGLqeaKyPh6qDj9ujG_5Aptxs/edit?usp=sharing)
