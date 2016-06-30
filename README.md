@@ -70,21 +70,21 @@ Primeiramente, observando a primeira aba, podemos ver claramente um ganho muito 
 
 Agora, visualizando a segunda aba que contém os dados para os processadores multicore sem aceleração, observamos que a quantidade de ciclos médio por core do multicore-2 é aproximadamente o dobro do multicore-4, que por sua vez é o dobro do multicore-8. Isso também era bem esperado para esse algoritmo de multiplicação de matrizes. Também podemos notar que a quantidade de total de instruções dos 3 processadores são semelhantes, entretanto, cada core executa apenas uma parte dessas instruções.
 
-![](http://raw.githubusercontent.com/gbasso06/mc723_proj3/master/charts/01%20-%20All%20vs%20Single.png)
+![](https://raw.githubusercontent.com/gbasso06/mc723_proj3/master/charts/01%20-%20All%20vs%20Single.png)
 
 O gráfico acima traduz a relação da quantidade de ciclos de todos os processadores em relação ao single core. Aqui, podemos notar que a quantidade de ciclos do single core é a maior de todos os outros processadores e que a aceleração desse processador tem um ganho de performance evidente, pois a quantidade de ciclos do não acelerado é 13 vezes maior que o acelerado. Podemos observar também a relação da divisão da quantidade de ciclos à medida que comparamos o single core não acelerado com os multicores não acelerados.
 
-![](http://raw.githubusercontent.com/gbasso06/mc723_proj3/master/charts/02%20-%20All%20vs%20Single%20Acc.png)
+![](https://raw.githubusercontent.com/gbasso06/mc723_proj3/master/charts/02%20-%20All%20vs%20Single%20Acc.png)
 
 O gráfico da imagem anterior mostra a relação de todos os processadores com o processador single core acelerado. Comparando com os multicores, podemos notar uma performance melhor que os não acelerados: cerca de 7 vezes menor que o multicore 2 e duas vezes menor que multicore 8.
 
 Para comparar os multicores acelerados, podemos dizer que, de acordo com o gráfico a seguir, os acelerados possuem melhor desempenho visível. Comparando o multicore 2 com o multicore 2 acelerado, vemos que o número de instruções é 1100% maior que no acelerado. 
 
-![](http://raw.githubusercontent.com/gbasso06/mc723_proj3/master/charts/09%20-%20All%20Mult%20vs%20Mult%202.png)
+![](https://raw.githubusercontent.com/gbasso06/mc723_proj3/master/charts/09%20-%20All%20Mult%20vs%20Mult%202.png)
 
 A seguir temos o gráfico comparativo entre os multicores acelerados.
 
-![](http://raw.githubusercontent.com/gbasso06/mc723_proj3/master/charts/10%20-%20All%20Multi%20Acc%20vs%20Multi%202%20Acc.png)
+![](https://raw.githubusercontent.com/gbasso06/mc723_proj3/master/charts/10%20-%20All%20Multi%20Acc%20vs%20Multi%202%20Acc.png)
 
 Vemos na imagem que a performance do multicore 4 acc é aproximadamente 35% melhor que a do multicore 2 acc, e que multicore 8 acc é 68% melhor.
 
